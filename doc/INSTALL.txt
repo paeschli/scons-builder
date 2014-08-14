@@ -1,0 +1,11 @@
+How to integrate SBEngine into your project
+-------------------------------------------
+
+Copy SConstruct and SConsProject files from templates directory into
+root dir of your project. Modify SConsProject file for your needs.
+Don't modify SConstruct file, it will automatically fetch SBEngine
+from git repository.
+
+Optionally you can integrate full SBEngine directly into your project
+by copying project directory of SBEngine into builder directory in the
+root directory of your project.

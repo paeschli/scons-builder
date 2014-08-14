@@ -1,0 +1,349 @@
+* SCons Builder Engine (SB Engine) *
+
+* Major changes between V2.22 and V2.23 *
+
+Added check for boost_serialization library.
+Added support for linking with Clang version 3.3.
+
+* Major changes between V2.21 and V2.22 *
+
+Fixed generation of Visual Studio projects.
+Improved cloning of the builder.
+Added RemovePackage command.
+Added OpenSSL and curl library checks.
+
+* Major changes between V2.20 and V2.21 *
+
+Changed LLVM checker to support LLVM version 3.1 and 3.3.
+Added support for linking with MCJIT to LLVM checker.
+Added support for Visual Studio project generation.
+Fixed boost thread library detection for GCC 4.7.2 / Ubuntu 12.10.
+Added initial support for building on ARM architecture.
+
+* Major changes between V2.19 and V2.20 *
+
+Added Xflow Module Check
+Added package declaration for DFCCDD library.
+Added Mozilla Spidermonkey checker.
+Improved LLVM checker support of LLVM 3.0 on Windows.
+Added checker for DFC library.
+Changed clang checker to support Clang version 3.0.
+Added checker for the boost_program_options library.
+Added detection of the name of GCC-compatible compiler.
+Changed llvm checker to support minimal and maximal required version.
+Added LINKFLAGS environment variable to the list of the accumulated variables.
+Added support for specifying additional C++ compiler options via cxxflags SCons
+option.
+Fixes for building on Windows and Mac OS X.
+
+* Major changes between V2.18 and V2.19 *
+
+Fixed detection of the packetizer library.
+Fixed incorrect parsing of the SCons version number.
+Added OpenFI library checker.
+
+* Major changes between V2.17 and V2.18 *
+
+Fixed Clang linking for the LLVM 2.9 final version.
+Added OpenCL/Axtor checker.
+
+* Major changes between V2.16 and V2.17 *
+
+Added AnySL2 checker.
+Added version check to OpenImageIO checker module.
+Added Optix checker.
+Added check for CUDA SDK directory on Linux (/usr/local/cuda).
+Fixed support for 32-bit compilation on 64-bit architecture on Linux.
+Added assimp checker module.
+
+* Major changes between V2.15 and V2.16 *
+
+Added output of the current SBEngine version.
+
+Added support for linking with shared version of the LLVM library
+to llvm checker.
+
+Added LLVMAssembler builder to llvm checker module.
+
+Added functions for disabling/enabling environment variable accumulation
+feature of SBEngine.
+
+Fixed incorrect creation of SBEngine wrapper builders.
+
+Added check for OIS version 1.2 and higher.
+
+Added check for google's sparsehash.
+
+* Major changes between V2.14 and V2.15 *
+
+Added RTfact/RTpie checker.
+
+Added support for SCons 1.3.0
+
+Multiple fixes in checkers for better Windows and Mac support.
+
+Added GetSConsVersion function for getting version of the SCons engine.
+
+Split "arch" parameter into "arch" (x86, x86_64 and ia64) and "cpu"
+(PentiumIV, Core, Core2, Opteron, etc.)
+
+Added support for compiling 32-bit applications on 64-bit architecture with GCC.
+
+* Major changes between V2.13 and V2.14 *
+
+Added CUDA checker.
+
+Improved LLVM checker.
+
+ Added detection of the clang compiler, checker will use clang instead of
+ llvm-gcc when no llvm-gcc is available. By setting use_clang_if_available
+ argument to CheckLLVM function to True checker will always use clang when
+ available.
+
+ Also two environment variables are now set depending on compiler availability:
+ HAVE_CLANG_COMPILER and HAVE_LLVM_GCC_COMPILER.
+
+ Modified boost checks in order to avoid conflicts with system-wide boost
+ on Linux.
+
+* Major changes between V2.12 and V2.13 *
+
+Added boost::thread checker module, updated SBEngine version to 2.13.
+
+* Major changes between V2.11 and V2.12 *
+
+Added detection of the clang's library directory to the clang checker module.
+
+Detection of the library directory is required for correct locating of clang's
+own header files.
+
+* Major changes between V2.10 and V2.11 *
+
+Reversed order of package dependencies. This is required for correct linking
+with static libraries, as their undefined symbol search works in only
+one direction (i.e. -lA -lB will only work with static libraries A and B
+when library B do not have any symbols in library A.
+Thus when A depends on B, A need to be before B in the library linking list)
+
+Added clang checker.
+
+* Major changes between V2.9 and V2.10 *
+
+Added showsources target for printing to stderr all source and header files
+used for build.
+Added packetizer checker module.
+
+* Major changes between V2.8 and V2.9 *
+
+Added OpenImageIO checker module.
+
+* Major changes between V2.7 and V2.8 *
+
+Added jitRT checker module.
+
+* Major changes between V2.6 and V2.7 *
+
+Fixed problem with linking static libraries (happened with LLVM).
+Improved llvm_check.py checker by testing for availability of internal debug
+flag in LLVM.
+
+* Major changes between V2.5 and V2.6 *
+
+Improved support for multiple generated configuration header files.
+
+* Major changes between V2.4 and V2.5 *
+
+Added support for debug suffixes on Windows platform when linking with debug
+version of MSVC run-time library.
+For activation WIN_DEBUG_SUFFIX variable need to be set (e.g. to "D")
+in the initialization environment init_env in the SConsProject file.
+
+* Major changes between V2.3 and V2.4 *
+
+Added support for versioning in butils.py.
+Added automatic download of required SB Engine version in SConstruct file.
+Changed required SCons version to be 1.2.
+
+* Major changes between V2.2 and V2.3 *
+
+In order to avoid deprecation warnings from SCons
+renamed all Option-specific functions (e.g. AddCustomOption) to use
+"Variable" word instead of "Option".
+
+* Major changes between V2.1 and V2.2 *
+
+Improved support for Mac OS X: fixed initialization of the Intel Compiler
+
+Added support for CPU info detection (based on code from RTfact: 
+RTfact/Utils/System/CPUInfo.hpp), use getCPUInfo(env) function from bconfig.py.
+
+
+* Major changes between V2.0 and V2.1 *
+
+1. Added support for builder packages. Builder packages simplify specification
+   of linker options. Instead of specifying options directly when using
+   env.Program, env.SharedLibrary, env.StaticLibrary, env.LoadableModule
+   only the library name in LIBS variable needs to be specified. The rest
+   is done by the SB Engine. Each pakage contains a list of so called trigger
+   libraries and frameworks (the latter are specific for Mac OS X).
+   When SB Engine determines that user tries to link with a trigger library
+   or framework it replaces this by the linking options specified in the 
+   corresponding package. Also package contains a list of all dependent
+   packages, and their options are added too.
+
+   Functions:
+
+   env.DeclarePackage(name, vars=None, dependencies=None, 
+                      trigger_libs=None, trigger_frameworks=None, **kw)
+   
+     Declares new package with the specified name.
+
+     vars                --  environment variables which are required in order 
+                             to link with the package.
+
+     dependencies        --  list of package names or package instances on which
+                             this package depends. When string is specified it 
+                             is split on whitespaces in order to create a list.
+   
+     trigger_libs        --  list of all libraries that trigger this package.
+   
+     trigger_frameworks  --  list of all Mac OS X frameworks that trigger this
+                             package.
+
+     kw                  --  dictionary used to alternatively provide 
+                             environment variables like vars.
+
+   env.GetPackage(name)
+
+     Returns package for the specified name or None if there no such package.
+
+   env.AddPackageTrigger(package, vars=None, 
+                         trigger_libs=None, trigger_frameworks=None)
+
+     Adds a new library and framework triggers to the package.
+
+   env.RequirePackage(names)
+    
+     Configures environment variables for compiling with the specfied packages.
+     Returns dictionary of the orignal values of all modified environment
+     variables.
+
+   Additional functions:
+
+   env.SaveVars(vars)
+
+     Clones and returns a dictionary of all variables specified in vars list.
+
+   env.RestoreVars(vars)
+
+     Copies all variables from vars dictionary to environment.
+
+
+   env.Program(), env.SharedLibrary(), env.StaticLibrary(), env.LoadableModule()
+
+     Added support for trigger libraries and frameworks.
+
+* Major changes between V1.x and V2.0 *
+
+Starting with the version 2.0 SB Engine require SCons v0.98
+or more precisely SCons v0.97.0d20070809 (with AddMethod) and later.
+Because there is no easy way to check such checkpoint version
+and because Ubuntu is shipped with SCons v0.97.0d20071203
+we avoid to check for 0.98 directly.
+
+Changes in SB Engine v2.0:
+
+- SConstruct -
+
+1. We check now for SCons v0.97.0, however we require that at least
+   v0.97.0d20070809 is available (see above).
+
+2. Added 'prefix' option for specifying installation prefix.
+
+- SConsProject -
+
+1. Instead of a single source directory SRC_DIR now a list
+   SOURCE_DIRS is specified at the start of the project file.
+   Also the naming scheme for the build/obj directory hierarchy is changed.
+   Now the name of the source directory is used as a prefix inside of the 
+   build/obj. When you update to the new SConsProject version we recommend
+   to remove build/obj and rebuild everything from scratch.
+
+2. From the source tree automatically copied public include files resides now
+   in build/include (i.e. public headers are copied per build) instead of in 
+   one project-wide include directory at the top level. 
+   This provides a standard POSIX directory layout 
+   within the build directory with include/, bin/ and lib/ directories and
+   simplifies testing of project without installing.
+   Additionally InstallHeaders command for copying of public header files was 
+   renamed to PublicHeaders. This prevent wrong understanding that 
+   InstallHeaders installs something, because new install target provide real 
+   POSIX-like installation support.
+
+   It is still possible to use the global include directory by
+   changing INCLUDE_DIR variable in SConsProject:
+
+   INCLUDE_DIR = '#include'
+
+3. Added new target 'install' which provide the "make install" functionality 
+   known from autotools. The installation prefix is stored in env['prefix'].
+   SConsProject also declares shortcuts for include, bin and lib directories:
+
+   env['INSTALL_INCLUDE_DIR']
+   env['INSTALL_LIB_DIR']
+   env['INSTALL_BIN_DIR']
+
+   In order to specify that headers, libraries or binaries should be installed
+   built-in SCons env.Install function should be used:
+
+   lib = env.SharedLibrary(...)
+   env.Install('$INSTALL_LIB_DIR', lib)
+
+- builder/btools.py -
+
+1. Improved builder wrappers by using new AddMethod function from SCons.
+   Removed obsolete RegisterEnvironmentFunction, instead use AddMethod.
+
+2. Because of the built-in SCons function env.Glob, renamed SBEngine 
+   Glob and GlobExpand to SourceGlob and SourceGlobExpand.
+   
+3. Renamed InstallHeaders to PublicHeaders, 
+   InstallBinaries to PublicBinaries.  (see above for details).
+
+4. Added function FilterFiles which allow to filter files by specifying
+   glob-like filename patterns.
+
+- builder/modules -
+
+1. Added nmm_check.py module which adds NMM Network Multimedia Middleware
+   checking and provides tools for compilation and installation of
+   NMM plugins:
+
+   For checking use conf.CheckNMM() where conf is the configuration context.
+   When NMM is detected CheckNMM function will install to the environment 
+   NMMIDL tool for compiling of NMM plugins as well as the NMMInstallPlugin 
+   function for correct installing of the plugins.
+
+   For correct working NMMInstallPlugin require that NMMDEVLIB environment
+   variable is set to the path to the dev-lib directory where links to
+   installed plugins should be created.
+
+   In order to correctly compile and link NMM (and other) plugins
+   use env.LoadableModule instead of env.SharedLibrary.
+
+2. Bugfixes: Found out that the used technique to store current LIBS
+   environment variable does not make a copy of it but stores only a reference:
+
+   lastLIBS = ctx.env.get('LIBS', [])
+
+   However under some circumstances appending something to the LIBS variable
+   will also change the list referenced by lastLIBS. So it is not possible 
+   to restore old contents of LIBS. The same is also true for any environment
+   variable which can contain a list and should be stored.
+   The solution is to explicitly clone the list:
+
+   lastLIBS = list(ctx.env.get('LIBS', []))
+
+- builder/modules/rtsg_check.py -
+
+1. Added check for RTSG/OpenRT module.

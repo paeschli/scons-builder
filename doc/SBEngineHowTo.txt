@@ -1,0 +1,59 @@
+1. Creation of Distribution Tarballs
+
+In SConscript file(s) declare all files which should be in the tarball:
+
+env.DistributeFiles(source, distPath=None, distGroup=None)
+
+source    : single filename, list of files, or list of produced targets of a
+            builder
+            
+distPath  : path where the file will reside in the distribution tarball
+
+distGroup : name of a distribution group, might be used for creating
+            of multiple tarballs with different content e.g. binary or source
+            code distribution.
+            
+Example:
+
+speed_test = env.Program('speed_test', 'speed_test.cpp', LIBS=['rtsgvrml']+LIBRTSG)
+env.DistributeFiles(speed_test, distPath='bin', distGroup='bin')
+
+Distribute all binaries for a program speed_test with path bin in the tarball.
+Mark all binaries as belonging to the 'bin' group.
+
+In SConsProject file declare all distribution tarballs with CreateDist
+command:
+
+env.CreateDist(targetFile, distGroups=None, distRootDir=None,
+               distFormat="bz2", excludeExts=None, excludeDirs=None)
+               
+targetFile  : file name of the distribution tarball, use '#/' prefix in order to create
+             a file in the project root directory
+
+distGroups  : list of names of distribution groups to include into tarball.
+
+distRootDir : name of the root dir contained in the tarball archive,
+              distPath used in DistributeFiles command will be relative
+              to this path
+
+distFormat  : archive format to use, gz and bz2 are supported
+
+excludeExts : exclude all files which extensions are in the specified list.
+
+excludeDirs : exclude all directories which are in the specified list.
+
+Example:
+
+release = env.CreateDist('#/'+RELEASE_NAME,
+                         Split('bin'),
+                         'rtsg',
+                         excludeExts=['.cvsignore', '.sconsign'],
+                         excludeDirs=['CVS','.svn','.sconf_temp'])
+env.Alias('release', release)
+
+Declare distribution tarball and set 'release' target to build it.
+Only files from the distribution group 'bin' will be included.
+The filename prefix of the archive is 'rtsg'. Files with extensions
+.cvsignore and .sconsign, as well as CVS, .svn, and .sconf_temp directories
+will be ignored.
+
